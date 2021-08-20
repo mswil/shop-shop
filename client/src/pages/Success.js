@@ -6,14 +6,10 @@ import { idbPromise } from "../utils/helpers";
 
 function Success() {
 
-    console.log('above mutation')
     const [addOrder] = useMutation(ADD_ORDER);
-console.log('below')
 
     useEffect(() => {
-        console.log('useEffect')
         async function saveOrder() {
-            console.log('saveOrder')
             const cart = await idbPromise('cart', 'get');
             const products = cart.map(item => item._id);
 

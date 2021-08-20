@@ -5,7 +5,7 @@ import { useStoreContext } from '../../utils/GlobalState';
 import { ADD_TO_CART, UPDATE_CART_QUANTITY } from '../../utils/actions';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart, updateCartQuantitiy, selectGlobal } from '../../utils/globalSlice';
+import { addToCart, updateCartQuantity, selectGlobal } from '../../utils/globalSlice';
 
 import { pluralize, idbPromise } from "../../utils/helpers"
 
@@ -24,9 +24,11 @@ function ProductItem(item) {
   const { cart } = state;
 
   const addItemToCart = () => {
+    console.log('addItem')
     const itemInCart = cart.find((cartItem) => cartItem._id === _id)
     if (itemInCart) {
-      dispatch(updateCartQuantitiy({
+      console.log('item in cart', itemInCart)
+      dispatch(updateCartQuantity({
         _id: _id,
         purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1
       }));
@@ -35,6 +37,7 @@ function ProductItem(item) {
         purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1
       });
     } else {
+      console.log('no item')
       dispatch(addToCart({ ...item, purchaseQuantity: 1 }));
       idbPromise('cart', 'put', { ...item, purchaseQuantity: 1 });
     }

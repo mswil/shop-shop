@@ -22,24 +22,27 @@ const globalSlice = createSlice({
             state.currentCategory = action.payload;
         },
         addToCart(state, action) {
+            console.log('add to cart', state, action)
             state.cartOpen = true;
-            state.cart.push(action.product);
+            state.cart.push(action.payload);
         },
         addMultipleToCart(state, action) {
-            state.cart.push(...action.products);
+            console.log(state, action)
+            state.cart.push(...action.payload);
         },
         removeFromCart(state, action) {
             let filteredProducts = state.cart.filter(product => {
-                return product._id !== action._id;
+                return product._id !== action.payload._id;
             });
             state.cartOpen = filteredProducts.length > 0;
             state.cart = filteredProducts;
         },
-        updateCartQuantitiy(state, action) {
+        updateCartQuantity(state, action) {
+            console.log(state,action)
             state.cartOpen = true;
             state.cart = state.cart.map(product => {
-                if (action._id === product._id) {
-                    product.purchaseQuantity = action.purchaseQuantity;
+                if (action.payload.item._id === product._id) {
+                    product.purchaseQuantity = action.payload.purchaseQuantity;
                 }
                 return product;
             })
@@ -61,7 +64,7 @@ export const {
     addToCart, 
     addMultipleToCart, 
     removeFromCart, 
-    updateCartQuantitiy, 
+    updateCartQuantity, 
     clearCart, 
     toggleCart 
 } = globalSlice.actions;

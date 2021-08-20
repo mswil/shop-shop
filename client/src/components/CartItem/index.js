@@ -3,33 +3,44 @@ import { useStoreContext } from '../../utils/GlobalState';
 import { REMOVE_FROM_CART, UPDATE_CART_QUANTITY } from '../../utils/actions';
 import { idbPromise } from "../../utils/helpers";
 
-const CartItem = ({ item }) => {
-    const [, dispatch] = useStoreContext();
+import { useSelector, useDispatch } from 'react-redux';
+import { removeFromCart, updateCartQuantity, selectGlobal } from '../../utils/globalSlice';
 
-    const removeFromCart = item => {
-        dispatch({
-            type: REMOVE_FROM_CART,
-            _id: item._id
-        });
+const CartItem = ({ item }) => {
+
+    const state = useSelector(selectGlobal);
+    const dispatch = useDispatch();
+    // const [, dispatch] = useStoreContext();
+
+    const removeItemFromCart = item => {
+        dispatch(removeFromCart(item))
+        // dispatch({
+        //     type: REMOVE_FROM_CART,
+        //     _id: item._id
+        // });
         idbPromise('cart', 'delete', { ...item });
     };
 
     const onChange = (e) => {
         const value = e.target.value;
+        console.log(value)
 
         if (value === '0') {
-            dispatch({
-                type: REMOVE_FROM_CART,
-                _id: item._id
-            });
+
+            dispatch(removeFromCart(item))
+            // dispatch({
+            //     type: REMOVE_FROM_CART,
+            //     _id: item._id
+            // });
 
             idbPromise('cart', 'delete', { ...item });
         } else {
-            dispatch({
-                type: UPDATE_CART_QUANTITY,
-                _id: item._id,
-                purchaseQuantity: parseInt(value)
-            });
+            dispatch(updateCartQuantity({item, purchaseQuantity:parseInt(value)}))
+            // dispatch({
+            //     type: UPDATE_CART_QUANTITY,
+            //     _id: item._id,
+            //     purchaseQuantity: parseInt(value)
+            // });
 
             idbPromise('cart', 'put', { ...item, purchaseQuantity: parseInt(value) });
         }
@@ -56,7 +67,7 @@ const CartItem = ({ item }) => {
                     <span
                         role="img"
                         aria-label="trash"
-                        onClick={() => removeFromCart(item)}
+                        onClick={() => removeItemFromCart(item)}
                     >
                         🗑️
                     </span>

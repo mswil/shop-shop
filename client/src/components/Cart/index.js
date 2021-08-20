@@ -6,6 +6,9 @@ import './style.css';
 import { useStoreContext } from '../../utils/GlobalState';
 import { TOGGLE_CART, ADD_MULTIPLE_TO_CART } from "../../utils/actions";
 
+import { useSelector, useDispatch } from "react-redux";
+import { toggleCart, addMultipleToCart, selectGlobal } from "../../utils/globalSlice";
+
 import Auth from '../../utils/auth';
 import { idbPromise } from "../../utils/helpers";
 
@@ -16,7 +19,9 @@ import { useLazyQuery } from '@apollo/client';
 const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
 
 const Cart = () => {
-    const [state, dispatch] = useStoreContext();
+    const state = useSelector(selectGlobal);
+    const dispatch = useDispatch();
+    // const [state, dispatch] = useStoreContext();
 
     const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
 
@@ -31,7 +36,9 @@ const Cart = () => {
     useEffect(() => {
         async function getCart() {
             const cart = await idbPromise('cart', 'get');
-            dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] });
+            console.log('cart', cart)
+            dispatch(addMultipleToCart(cart))
+            // dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] });
         };
 
         if (!state.cart.length) {
@@ -39,8 +46,9 @@ const Cart = () => {
         }
     }, [state.cart.length, dispatch]);
 
-    function toggleCart() {
-        dispatch({ type: TOGGLE_CART });
+    function toggleCartEl() {
+        dispatch(toggleCart())
+        // dispatch({ type: TOGGLE_CART });
     }
 
     function calculateTotal() {
@@ -53,7 +61,7 @@ const Cart = () => {
 
     if (!state.cartOpen) {
         return (
-            <div className="cart-closed" onClick={toggleCart}>
+            <div className="cart-closed" onClick={toggleCartEl}>
                 <span
                     role="img"
                     aria-label="trash">🛒</span>
@@ -77,7 +85,7 @@ const Cart = () => {
 
     return (
         <div className="cart">
-            <div className="close" onClick={toggleCart}>[close]</div>
+            <div className="close" onClick={toggleCartEl}>[close]</div>
             <h2>Shopping Cart</h2>
             {state.cart.length ? (
                 <div>

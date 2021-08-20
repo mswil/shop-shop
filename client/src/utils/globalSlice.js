@@ -16,10 +16,10 @@ const globalSlice = createSlice({
             state.products = action.payload.products;
         },
         updateCategories(state, action) {
-            state.categories = action.categories;
+            state.categories = action.payload.categories;
         },
         updateCurrentCategory(state, action) {
-            state.currentCategory = action.currentCategory;
+            state.currentCategory = action.payload;
         },
         addToCart(state, action) {
             state.cartOpen = true;

@@ -8,10 +8,15 @@ import spinner from '../../assets/spinner.gif';
 import { useStoreContext } from '../../utils/GlobalState';
 import { UPDATE_PRODUCTS } from '../../utils/actions';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { updateProducts, selectGlobal } from '../../utils/globalSlice';
+
 import { idbPromise } from "../../utils/helpers";
 
 function ProductList() {
-  const [state, dispatch] = useStoreContext();
+  const state = useSelector(selectGlobal);
+  const dispatch = useDispatch();
+  // const [state, dispatch] = useStoreContext();
 
   const { currentCategory } = state;
 
@@ -19,10 +24,7 @@ function ProductList() {
 
   useEffect(() => {
     if (data) {
-      dispatch({
-        type: UPDATE_PRODUCTS,
-        products: data.products
-      });
+      dispatch(updateProducts(data));
 
       data.products.forEach((product) => {
         idbPromise('products', 'put', product);
@@ -32,10 +34,7 @@ function ProductList() {
       // since we're offline, get all of the data from the `products` store
       idbPromise('products', 'get').then((products) => {
         // use retrieved data to set global state for offline browsing
-        dispatch({
-          type: UPDATE_PRODUCTS,
-          products: products
-        });
+        dispatch(updateProducts(products));
       });
     }
   }, [data, loading, dispatch]);

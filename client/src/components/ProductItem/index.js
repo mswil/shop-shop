@@ -23,7 +23,7 @@ function ProductItem(item) {
 
   const { cart } = state;
 
-  const addToCart = () => {
+  const addItemToCart = () => {
     const itemInCart = cart.find((cartItem) => cartItem._id === _id)
     if (itemInCart) {
       dispatch(updateCartQuantitiy({
@@ -53,7 +53,7 @@ function ProductItem(item) {
         <div>{quantity} {pluralize("item", quantity)} in stock</div>
         <span>${price}</span>
       </div>
-      <button onClick={addToCart}>Add to cart</button>
+      <button onClick={addItemToCart}>Add to cart</button>
     </div>
   );
 }

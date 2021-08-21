@@ -5,9 +5,6 @@ import ProductItem from '../ProductItem';
 import { QUERY_PRODUCTS } from '../../utils/queries';
 import spinner from '../../assets/spinner.gif';
 
-import { useStoreContext } from '../../utils/GlobalState';
-import { UPDATE_PRODUCTS } from '../../utils/actions';
-
 import { useSelector, useDispatch } from 'react-redux';
 import { updateProducts, selectGlobal } from '../../utils/globalSlice';
 
@@ -16,7 +13,6 @@ import { idbPromise } from "../../utils/helpers";
 function ProductList() {
   const state = useSelector(selectGlobal);
   const dispatch = useDispatch();
-  // const [state, dispatch] = useStoreContext();
 
   const { currentCategory } = state;
 

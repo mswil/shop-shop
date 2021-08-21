@@ -26,7 +26,6 @@ const globalSlice = createSlice({
             state.cart.push(action.payload);
         },
         addMultipleToCart(state, action) {
-            console.log(state, action)
             state.cart.push(...action.payload);
         },
         removeFromCart(state, action) {
@@ -44,7 +43,6 @@ const globalSlice = createSlice({
                 }
                 return product;
             })
-            console.log(state.cart)
         },
         clearCart(state) {
             state.cartOpen = false;

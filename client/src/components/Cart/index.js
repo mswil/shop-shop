@@ -3,9 +3,6 @@ import React, { useEffect } from "react";
 import CartItem from '../CartItem';
 import './style.css';
 
-import { useStoreContext } from '../../utils/GlobalState';
-import { TOGGLE_CART, ADD_MULTIPLE_TO_CART } from "../../utils/actions";
-
 import { useSelector, useDispatch } from "react-redux";
 import { toggleCart, addMultipleToCart, selectGlobal } from "../../utils/globalSlice";
 
@@ -21,7 +18,6 @@ const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
 const Cart = () => {
     const state = useSelector(selectGlobal);
     const dispatch = useDispatch();
-    // const [state, dispatch] = useStoreContext();
 
     const [getCheckout, { data }] = useLazyQuery(QUERY_CHECKOUT);
 
@@ -36,9 +32,7 @@ const Cart = () => {
     useEffect(() => {
         async function getCart() {
             const cart = await idbPromise('cart', 'get');
-            console.log('cart', cart)
             dispatch(addMultipleToCart(cart))
-            // dispatch({ type: ADD_MULTIPLE_TO_CART, products: [...cart] });
         };
 
         if (!state.cart.length) {
@@ -48,7 +42,6 @@ const Cart = () => {
 
     function toggleCartEl() {
         dispatch(toggleCart())
-        // dispatch({ type: TOGGLE_CART });
     }
 
     function calculateTotal() {

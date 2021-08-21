@@ -22,7 +22,6 @@ const globalSlice = createSlice({
             state.currentCategory = action.payload;
         },
         addToCart(state, action) {
-            console.log('add to cart', state, action)
             state.cartOpen = true;
             state.cart.push(action.payload);
         },
@@ -38,14 +37,14 @@ const globalSlice = createSlice({
             state.cart = filteredProducts;
         },
         updateCartQuantity(state, action) {
-            console.log(state,action)
             state.cartOpen = true;
             state.cart = state.cart.map(product => {
-                if (action.payload.item._id === product._id) {
+                if (action.payload._id === product._id) {
                     product.purchaseQuantity = action.payload.purchaseQuantity;
                 }
                 return product;
             })
+            console.log(state.cart)
         },
         clearCart(state) {
             state.cartOpen = false;
